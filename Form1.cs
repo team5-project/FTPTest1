@@ -38,43 +38,6 @@ namespace FTPTest1
         }
 
 
-        private static void UploadFile(string localFile)
-        {
-            string FtpAddress = "192.168.1.98";
-           // string FtpRemotePath = "File";
-            string FtpUid = "TT";
-            string FtpPwd = "FTP";
-
-            FileInfo fi = new FileInfo(localFile);
-            FileStream fs = fi.OpenRead();
-            long length = fs.Length;
-            FtpWebRequest req = (FtpWebRequest)WebRequest.Create("ftp://" + FtpAddress+ "/" + fi.Name);
-            req.Credentials = new NetworkCredential(FtpUid, FtpPwd);
-            req.Method = WebRequestMethods.Ftp.UploadFile;
-            req.UseBinary = true;
-            req.ContentLength = length;
-            req.Timeout = 10 * 1000;
-            try
-            {
-                Stream stream = req.GetRequestStream();
-                int BufferLength = 2048;
-                byte[] b = new byte[BufferLength];
-                int i;
-                while ((i = fs.Read(b, 0, BufferLength)) > 0)
-                {
-                    stream.Write(b, 0, i);
-                }
-                stream.Close();
-                stream.Dispose();
-
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.ToString());
-            }
-
-        }
-
         public void Upload(string filename)
         {
             string FtpAddress = "192.168.1.98";
@@ -122,7 +85,7 @@ namespace FTPTest1
             string FtpUserName = "TT";
             string FtpPassWord = "FTP";
             Uri uri = new Uri(FtpPath);
-            string TempFolderPath = @"F:\file\getfile";
+            string TempFolderPath = @"F:\file\1";
             string FileName = Path.GetFullPath(TempFolderPath) + Path.DirectorySeparatorChar.ToString() + Path.GetFileName(uri.LocalPath);
 
             //创建一个文件流
