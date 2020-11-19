@@ -22,34 +22,27 @@ namespace FTPTest1
 
         private void button_Click(object sender, EventArgs e)
         {
-            //MessageBox.Show("TT");
-            //string file = "F:\txt.txt";
            Upload(@"F:\file\txt.txt");
-            //UploadFile("F:\file\txt.txt");
         }
 
         private void button1_Click(object sender, EventArgs e)
         {
             DownLoad();
-            MessageBox.Show("TT");
-            //string file = "F:\txt.txt";
-             //Upload(@"F:\file\txt.txt");
-            //UploadFile("F:\file\txt.txt");
         }
 
+        private string FtpAddress = UserData.FtpAddress;
+        private string username=UserData.username;
+        private string userpassword = UserData.userpassword;
 
         public void Upload(string filename)
         {
-            string FtpAddress = "192.168.1.98";
             string FtpRemotePath = "/File/";
-            string username = "TT";
-            string password = "FTP";
             FileInfo fileInf = new FileInfo(filename);
             string uri = "ftp://" + FtpAddress + "/" + fileInf.Name;
             FtpWebRequest reqFTP;
 
             reqFTP = (FtpWebRequest)FtpWebRequest.Create(new Uri(uri));
-            reqFTP.Credentials = new NetworkCredential(username, password);
+            reqFTP.Credentials = new NetworkCredential(username, userpassword);
             reqFTP.KeepAlive = false;
             reqFTP.Method = WebRequestMethods.Ftp.UploadFile;
             reqFTP.UseBinary = true;
@@ -75,15 +68,14 @@ namespace FTPTest1
             {
                 throw new Exception("Ftphelper Upload Error --> " + ex.Message);
             }
+            MessageBox.Show("上传完成");
 
         }
 
         public void DownLoad()
         {
-            string FtpPath = "ftp://" + "192.168.1.98"+"/txt.txt";
-            // string FtpRemotePath = "File";
-            string FtpUserName = "TT";
-            string FtpPassWord = "FTP";
+
+            string FtpPath = "ftp://" + FtpAddress +"/txt.txt";
             Uri uri = new Uri(FtpPath);
             string TempFolderPath = @"F:\file\1";
             string FileName = Path.GetFullPath(TempFolderPath) + Path.DirectorySeparatorChar.ToString() + Path.GetFileName(uri.LocalPath);
@@ -99,7 +91,7 @@ namespace FTPTest1
                 request.Method = WebRequestMethods.Ftp.DownloadFile;
 
                 //连接登录FTP服务器
-                request.Credentials = new NetworkCredential(FtpUserName, FtpPassWord);
+                request.Credentials = new NetworkCredential(username, userpassword);
 
                 //获取一个请求响应对象
                 FtpWebResponse response = (FtpWebResponse)request.GetResponse();
@@ -149,6 +141,7 @@ namespace FTPTest1
                 if (responseStream != null)
                     responseStream.Close();
             }
+            MessageBox.Show("下载完成");
         }
     }
 }

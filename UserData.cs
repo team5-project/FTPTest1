@@ -8,6 +8,8 @@ namespace FTPTest1
 {
     class UserData
     {
-        public 
+        public static string FtpAddress = "192.168.1.98";
+        public static string username = "TT";
+        public static string userpassword = "FTP";
     }
 }
